@@ -153,5 +153,7 @@ static Signal signals[] = {
 	{ "setlayoutex",    setlayoutex },
 	{ "togglefullscr",  togglefullscr },
 	{ "shiftview",      shiftview },
-	{ "setgap",         setgaps },
+	{ "defaultgaps",    defaultgaps },
+	{ "togglegaps",     togglegaps },
+	{ "incrgaps",       incrgaps },
 };
