@@ -3,10 +3,12 @@
 /* appearance */
 static unsigned int borderpx  = 2;        /* border pixel of windows */
 static unsigned int snap      = 8;        /* snap pixel */
-static unsigned int gappih    = 4;       /* horiz inner gap between windows */
-static unsigned int gappiv    = 4;       /* vert inner gap between windows */
-static unsigned int gappoh    = 4;       /* horiz outer gap between windows and screen edge */
-static unsigned int gappov    = 4;       /* vert outer gap between windows and screen edge */
+static unsigned int gappih    = 4;        /* horiz inner gap between windows */
+static unsigned int gappiv    = 4;        /* vert inner gap between windows */
+static unsigned int gappoh    = 4;        /* horiz outer gap between windows and screen edge */
+static unsigned int gappov    = 4;        /* vert outer gap between windows and screen edge */
+static int horizpadbar        = 2;        /* horizontal padding for statusbar */
+static int vertpadbar         = 4;        /* vertical padding for statusbar */
 static int showbar            = 1;        /* 0 means no bar */
 static int topbar             = 1;        /* 0 means bottom bar */
 static int smartgaps          = 1;        /* 1 means no outer gap when there is only one window */
@@ -79,6 +81,8 @@ ResourcePref resources[] = {
 		{ "snap",          		INTEGER, &snap },
 		{ "showbar",          	INTEGER, &showbar },
 		{ "topbar",          	INTEGER, &topbar },
+		{ "horizpadbar",      	INTEGER, &horizpadbar },
+		{ "vertpadbar",      	INTEGER, &vertpadbar },
 		{ "nmaster",          	INTEGER, &nmaster },
 		{ "resizehints",       	INTEGER, &resizehints },
 		{ "gappih",       	    INTEGER, &gappih },
