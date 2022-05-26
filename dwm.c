@@ -767,9 +767,7 @@ dirtomon(int dir)
 void
 drawbar(Monitor *m)
 {
-	int x, w, scm, sw = 0, n = 0, tw = 0;
-	int boxs = drw->fonts->h / 9;
-	int boxw = drw->fonts->h / 6 + 2;
+	int x, w, scm, n = 0, tw = 0;
 	unsigned int i, occ = 0, urg = 0;
 	Client *c;
 
@@ -1786,42 +1784,6 @@ tagmon(const Arg *arg)
 		return;
 	sendmon(selmon->sel, dirtomon(arg->i));
 }
-
-/*
-void
-tile(Monitor *m)
-{
-	unsigned int i, n, h, mw, my, ty, bw, gap;
-	Client *c;
-
-	for (n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++);
-	if (n == 0)
-		return;
-
-	if (n == 1) {
-		bw = 0;
-        gap = 0;
-    } else {
-		bw = borderpx;
-        gap = m->gappx;
-    }
-
-	if (n > m->nmaster)
-		mw = m->nmaster ? m->ww * m->mfact : 0;
-	else
-		mw = m->ww - gap;
-	for (i = my = ty = gap, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++)
-		if (i < m->nmaster) {
-			h = (m->wh - my) / (MIN(n, m->nmaster) - i) - gap;
-			resize(c, m->wx + gap, m->wy + my, mw - (2*bw) - gap, h - (2*bw), bw, 0);
-			my += HEIGHT(c) + gap;
-		} else {
-			h = (m->wh - ty) / (n - i) - gap;
-			resize(c, m->wx + mw + gap, m->wy + ty, m->ww - mw - (2*bw) - 2*gap, h - (2*bw), bw, 0);
-			ty += HEIGHT(c) + gap;
-		}
-}
-*/
 
 void
 togglebar(const Arg *arg)
