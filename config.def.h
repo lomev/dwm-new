@@ -132,7 +132,6 @@ static Signal signals[] = {
 	{ "focusstack",     focusstack },
 	{ "setmfact",       setmfact },
 	{ "togglebar",      togglebar },
-	{ "incnmaster",     incnmaster },
 	{ "togglefloating", togglefloating },
 	{ "focusmon",       focusmon },
 	{ "tagmon",         tagmon },
@@ -156,4 +155,7 @@ static Signal signals[] = {
 	{ "defaultgaps",    defaultgaps },
 	{ "togglegaps",     togglegaps },
 	{ "incrgaps",       incrgaps },
+	{ "transfer",       transfer },
+	{ "pushdown",       pushdown },
+	{ "pushup",         pushup },
 };
