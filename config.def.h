@@ -1,17 +1,18 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static unsigned int borderpx  = 2;        /* border pixel of windows */
-static unsigned int snap      = 8;        /* snap pixel */
-static unsigned int gappih    = 4;        /* horiz inner gap between windows */
-static unsigned int gappiv    = 4;        /* vert inner gap between windows */
-static unsigned int gappoh    = 4;        /* horiz outer gap between windows and screen edge */
-static unsigned int gappov    = 4;        /* vert outer gap between windows and screen edge */
-static int horizpadbar        = 2;        /* horizontal padding for statusbar */
-static int vertpadbar         = 4;        /* vertical padding for statusbar */
-static int showbar            = 1;        /* 0 means no bar */
-static int topbar             = 1;        /* 0 means bottom bar */
-static int smartgaps          = 1;        /* 1 means no outer gap when there is only one window */
+static unsigned int borderpx  = 2;    /* border pixel of windows */
+static unsigned int snap      = 8;    /* snap pixel */
+static unsigned int gappih    = 4;    /* horiz inner gap between windows */
+static unsigned int gappiv    = 4;    /* vert inner gap between windows */
+static unsigned int gappoh    = 4;    /* horiz outer gap between windows and screen edge */
+static unsigned int gappov    = 4;    /* vert outer gap between windows and screen edge */
+static int swallowfloating    = 0;    /* 1 means swallow floating windows by default */
+static int horizpadbar        = 2;    /* horizontal padding for statusbar */
+static int vertpadbar         = 4;    /* vertical padding for statusbar */
+static int showbar            = 1;    /* 0 means no bar */
+static int topbar             = 1;    /* 0 means bottom bar */
+static int smartgaps          = 1;    /* 1 means no outer gap when there is only one window */
 
 /* fonts */
 static const char *fonts[] = { "monospace:size=10",
@@ -38,13 +39,13 @@ typedef struct {
 
 const char *spcmd1[] = {"st", "-n", "spterm", "-g", "120x34", NULL };
 const char *spcmd2[] = {"st", "-n", "spfm", "-g", "144x41", "-e", "lf", NULL };
-const char *spcmd3[] = {"st", "-n", "spcalc", "-f", "monospace:size=16", "-g", "50x20", "-e", "bc", "-lq", NULL };
+const char *spcmd3[] = {"st", "-n", "spcalc", "-g", "50x20", "-e", "bc", "-lq", NULL };
 
 static Sp scratchpads[] = {
 	/* name      cmd */
 	{ "spterm",  spcmd1 },
-	{ "spfm",    spcmd2},
-	{ "spcalc",  spcmd3},
+	{ "spfm",    spcmd2 },
+	{ "spcalc",  spcmd3 },
 };
 
 /* tagging */
@@ -60,12 +61,14 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class      instance    title       tags mask     isfloating   monitor */
-	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
-	{ "firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
-	{ NULL,       "spterm",	  NULL,       SPTAG(0),     1,           -1 },
-	{ NULL,       "spfm",     NULL,       SPTAG(1),     1,           -1 },
-	{ NULL,       "spcalc",   NULL,       SPTAG(2),     1,           -1 },
+	/* class      instance    title           tags mask     isfloating   isterminal  noswallow  monitor */
+	{ "Gimp",     NULL,       NULL,           0,            1,           0,           0,        -1 },
+	{ "firefox",  NULL,       NULL,           1 << 8,       0,           0,          -1,        -1 },
+	{ "St",       NULL,       NULL,           0,            0,           1,           0,        -1 }, 
+	{ NULL,       NULL,       "Event Tester", 0,            0,           0,           1,        -1 },
+	{ NULL,       "spterm",	  NULL,           SPTAG(0),     1,           1,           1,         1 },
+	{ NULL,       "spfm",     NULL,           SPTAG(1),     1,           1,           1,         1 },
+	{ NULL,       "spcalc",   NULL,           SPTAG(2),     1,           1,           1,         1 },
 };
 
 /* layout(s) */
