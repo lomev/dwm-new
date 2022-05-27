@@ -8,6 +8,8 @@ static unsigned int gappiv    = 4;    /* vert inner gap between windows */
 static unsigned int gappoh    = 4;    /* horiz outer gap between windows and screen edge */
 static unsigned int gappov    = 4;    /* vert outer gap between windows and screen edge */
 static int swallowfloating    = 0;    /* 1 means swallow floating windows by default */
+static int floatposgrid_x     = 5;    /* float grid columns */
+static int floatposgrid_y     = 5;    /* float grid rows */
 static int horizpadbar        = 2;    /* horizontal padding for statusbar */
 static int vertpadbar         = 4;    /* vertical padding for statusbar */
 static int showbar            = 1;    /* 0 means no bar */
@@ -37,9 +39,9 @@ typedef struct {
 	const void *cmd;
 } Sp;
 
-const char *spcmd1[] = {"st", "-n", "spterm", "-g", "120x34", NULL };
-const char *spcmd2[] = {"st", "-n", "spfm", "-g", "144x41", "-e", "lf", NULL };
-const char *spcmd3[] = {"st", "-n", "spcalc", "-g", "50x20", "-e", "bc", "-lq", NULL };
+const char *spcmd1[] = {"st", "-n", "spterm", NULL };
+const char *spcmd2[] = {"st", "-n", "spfm", "-e", "lf", NULL };
+const char *spcmd3[] = {"st", "-n", "spcalc", "-f", "monospace:size=15", "-e", "bc", "-lq", NULL };
 
 static Sp scratchpads[] = {
 	/* name      cmd */
@@ -61,14 +63,15 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class      instance    title           tags mask     isfloating   isterminal  noswallow  monitor */
-	{ "Gimp",     NULL,       NULL,           0,            1,           0,           0,        -1 },
-	{ "firefox",  NULL,       NULL,           1 << 8,       0,           0,          -1,        -1 },
-	{ "St",       NULL,       NULL,           0,            0,           1,           0,        -1 }, 
-	{ NULL,       NULL,       "Event Tester", 0,            0,           0,           1,        -1 },
-	{ NULL,       "spterm",	  NULL,           SPTAG(0),     1,           1,           1,         1 },
-	{ NULL,       "spfm",     NULL,           SPTAG(1),     1,           1,           1,         1 },
-	{ NULL,       "spcalc",   NULL,           SPTAG(2),     1,           1,           1,         1 },
+	/* class      instance    title           tags mask     isfloating   isterminal  noswallow  floatpos               monitor */
+	{ "Gimp",     NULL,       NULL,           0,            1,           0,           0,        NULL,                  -1 },
+	{ "firefox",  NULL,       NULL,           1 << 8,       0,           0,          -1,        NULL,                  -1 },
+	{ "St",       NULL,       NULL,           0,            0,           1,           0,        NULL,                  -1 },
+	{ "mpv",      NULL,       NULL,           0,            1,           0,           0,        "100% 100% 320W 180H", -1 },
+	{ NULL,       NULL,       "Event Tester", 0,            0,           0,           1,        NULL,                  -1 },
+	{ NULL,       "spterm",	  NULL,           SPTAG(0),     1,           1,           0,        "50% 50% 800W 300H",   -1 },
+	{ NULL,       "spfm",     NULL,           SPTAG(1),     1,           1,           0,        "0X 0Y 100% 30%",      -1 },
+	{ NULL,       "spcalc",   NULL,           SPTAG(2),     1,           1,           0,        "100% 100% 400W 300H", -1 },
 };
 
 /* layout(s) */
