@@ -65,7 +65,7 @@ static const Rule rules[] = {
 	{ "firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
 	{ NULL,       "spterm",	  NULL,       SPTAG(0),     1,           -1 },
 	{ NULL,       "spfm",     NULL,       SPTAG(1),     1,           -1 },
-	{ NULL,       "spcalc",     NULL,     SPTAG(2),     1,           -1 },
+	{ NULL,       "spcalc",   NULL,       SPTAG(2),     1,           -1 },
 };
 
 /* layout(s) */
@@ -211,4 +211,5 @@ static Signal signals[] = {
 	{ "pushup",         pushup },
 	{ "cyclelayout",    cyclelayout },
 	{ "togglescratch",  togglescratch },
+	{ "goback",         goback },
 };
