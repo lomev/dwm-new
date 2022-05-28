@@ -16,6 +16,7 @@ static void deck(Monitor *m);
 static void gaplessgrid(Monitor *m);
 static void horizgrid(Monitor *m);
 static void tile(Monitor *m);
+static void monocle(Monitor *m);
 
 /* Internals */
 static void getgaps(Monitor *m, int *oh, int *ov, int *ih, int *iv, unsigned int *nc);
@@ -471,6 +472,9 @@ tile(Monitor *m)
 		}
 }
 
+/*
+ * Monocle layout + gaps
+ */
 void
 monocle(Monitor *m)
 {
