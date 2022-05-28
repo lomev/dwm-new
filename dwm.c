@@ -926,6 +926,7 @@ drawbar(Monitor *m)
 	x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0);
 
 	if ((w = m->ww - tw - x) > bh) {
+    w -= 2 * sp;
 		if (n > 0) {
 			for (c = m->clients; c; c = c->next) {
 				if (!ISVISIBLE(c))
@@ -938,12 +939,12 @@ drawbar(Monitor *m)
 					scm = SchemeNorm;
 
 				drw_setscheme(drw, scheme[scm]);
-				drw_text(drw, x, 0, (1.0 / (double)n) * w - 2 * sp, bh, lrpad / 2 - 2, c->name, 0);
-				x += (1.0 / (double)n) * w - 2 * sp;
+				drw_text(drw, x, 0, (1.0 / (double)n) * w, bh, lrpad / 2 - 2, c->name, 0);
+				x += (1.0 / (double)n) * w;
 			}
 		} else {
 			drw_setscheme(drw, scheme[SchemeNorm]);
-			drw_rect(drw, x, 0, w - 2 * sp, bh, 1, 1);
+			drw_rect(drw, x, 0, w, bh, 1, 1);
 		}
 	}
 
