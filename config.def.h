@@ -11,9 +11,9 @@ static int swallowfloating    = 0;    /* 1 means swallow floating windows by def
 static int floatposgrid_x     = 5;    /* float grid columns */
 static int floatposgrid_y     = 5;    /* float grid rows */
 static int horizpadbar        = 2;    /* horizontal padding for statusbar */
-static int vertpadbar         = 4;    /* vertical padding for statusbar */
+static int vertpadbar         = 8;    /* vertical padding for statusbar */
 static int vertpad            = 8;    /* vertical padding of bar */
-static int sidepad            = 32;   /* horizontal padding of bar */
+static int sidepad            = 16;   /* horizontal padding of bar */
 static int showbar            = 1;    /* 0 means no bar */
 static int topbar             = 1;    /* 0 means bottom bar */
 static int smartgaps          = 0;    /* 1 means no outer gap when there is only one window */
@@ -33,6 +33,14 @@ static char *colors[][3] = {
 	/*               fg           bg           border   */
 	[SchemeNorm] = { normfgcolor, normbgcolor, normbordercolor },
 	[SchemeSel]  = { selfgcolor,  selbgcolor,  selbordercolor  },
+};
+
+static const unsigned int baralpha    = 0xd0;
+static const unsigned int borderalpha = OPAQUE;
+static const unsigned int alphas[][3] = {
+	/*               fg      bg        border   */
+	[SchemeNorm] = { OPAQUE, baralpha, borderalpha  },
+	[SchemeSel]  = { OPAQUE, baralpha, borderalpha  },
 };
 
 /* scratchpads */
