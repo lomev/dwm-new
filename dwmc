@@ -21,7 +21,7 @@ case $# in
 	view)
 		signal $1 ui $2
 		;;
-    viewex | toggleviewex | tagex | toggletagex | setlayoutex | focusstack | incnmaster | focusmon | tagmonv | setgaps | shiftview | incrgaps | cyclelayout | togglescratch)
+    viewex | toggleviewex | tagex | toggletagex | setlayoutex | focusstack | incnmaster | focusmon | tagmon | setgaps | shiftview | incrgaps | cyclelayout | togglescratch)
 		signal $1 i $2
 		;;
 	setmfact)
