@@ -1,7 +1,5 @@
 /* See LICENSE file for copyright and license details. */
 
-#include "vanitygaps.c"
-
 #define STATUSBAR               "dwmblocks"
 #define OPAQUE                  0xffU
 #define MODKEY                  Mod4Mask
@@ -9,6 +7,7 @@
 /* appearance */
 static unsigned int borderpx  = 2;    /* border pixel of windows */
 static unsigned int snap      = 8;    /* snap pixel */
+static unsigned int underline = 1;	  /* thickness / height of the underline */
 static int swallowfloating    = 0;    /* 1 means swallow floating windows by default */
 static int floatposgrid_x     = 5;    /* float grid columns */
 static int floatposgrid_y     = 5;    /* float grid rows */
@@ -28,9 +27,9 @@ static unsigned int gappoh    = 8;    /* horiz outer gap between windows and scr
 static unsigned int gappov    = 16;   /* vert outer gap between windows and screen edge */
 
 /* fonts */
-static const char *fonts[] = { "monospace:size=9", "Siji" };
+static const char *fonts[]    = { "monospace:size=9", "Siji" };
 
-/* default cholorscheme */
+/* cholorscheme */
 static char normbordercolor[] = "#444444";
 static char normbgcolor[]     = "#222222";
 static char normfgcolor[]     = "#bbbbbb";
@@ -71,10 +70,6 @@ static Sp scratchpads[] = {
 /* tagging */
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
-static const unsigned int ulinepad      = 0;	/* horizontal padding between the underline and tag */
-static const unsigned int ulinestroke   = 1;	/* thickness / height of the underline */
-static const unsigned int ulinevoffset  = 0;	/* how far above the bottom of the bar the line should appear */
-static const int ulineall               = 0;	/* 1 to show underline on all tags, 0 for just the active ones */
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -98,6 +93,8 @@ static int nmaster     = 1;    /* number of clients in master area */
 static int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
 static const int lockfullscreen = 1;    /* 1 will force focus on the fullscreen window */
 
+#include "vanitygaps.c"
+
 static const Layout layouts[] = {
 	/* symbol     arrange function */
 	{ " \ue002",  tile },
@@ -113,31 +110,30 @@ static const Layout layouts[] = {
 
 /* Xresources preferences to load at startup */
 ResourcePref resources[] = {
-		{ "normbgcolor",        STRING,  &normbgcolor },
-		{ "normbordercolor",    STRING,  &normbordercolor },
-		{ "normfgcolor",        STRING,  &normfgcolor },
-		{ "selbgcolor",         STRING,  &selbgcolor },
-		{ "selbordercolor",     STRING,  &selbordercolor },
-		{ "selfgcolor",         STRING,  &selfgcolor },
-		{ "borderpx",          	INTEGER, &borderpx },
-		{ "snap",          		INTEGER, &snap },
-		{ "showbar",          	INTEGER, &showbar },
-		{ "topbar",          	INTEGER, &topbar },
-		{ "horizpadbar",      	INTEGER, &horizpadbar },
-		{ "vertpadbar",      	INTEGER, &vertpadbar },
-		{ "vertpad",          	INTEGER, &vertpad },
-		{ "sidepad",        	INTEGER, &sidepad },
-		{ "nmaster",          	INTEGER, &nmaster },
-		{ "resizehints",       	INTEGER, &resizehints },
-		{ "gappih",       	    INTEGER, &gappih },
-		{ "gappiv",       	    INTEGER, &gappiv },
-		{ "gappoh",       	    INTEGER, &gappoh },
-		{ "gappov",       	    INTEGER, &gappov },
-		{ "smartgaps",     	    INTEGER, &smartgaps },
-		{ "viewontag",     	    INTEGER, &viewontag },
-		{ "mfact",      	 	FLOAT,   &mfact },
+	{ "normbgcolor",        STRING,  &normbgcolor },
+	{ "normbordercolor",    STRING,  &normbordercolor },
+	{ "normfgcolor",        STRING,  &normfgcolor },
+	{ "selbgcolor",         STRING,  &selbgcolor },
+	{ "selbordercolor",     STRING,  &selbordercolor },
+	{ "selfgcolor",         STRING,  &selfgcolor },
+	{ "borderpx",          	INTEGER, &borderpx },
+	{ "snap",          		INTEGER, &snap },
+	{ "showbar",          	INTEGER, &showbar },
+	{ "topbar",          	INTEGER, &topbar },
+	{ "horizpadbar",      	INTEGER, &horizpadbar },
+	{ "vertpadbar",      	INTEGER, &vertpadbar },
+	{ "vertpad",          	INTEGER, &vertpad },
+	{ "sidepad",        	INTEGER, &sidepad },
+	{ "nmaster",          	INTEGER, &nmaster },
+	{ "resizehints",       	INTEGER, &resizehints },
+	{ "gappih",       	    INTEGER, &gappih },
+	{ "gappiv",       	    INTEGER, &gappiv },
+	{ "gappoh",       	    INTEGER, &gappoh },
+	{ "gappov",       	    INTEGER, &gappov },
+	{ "smartgaps",     	    INTEGER, &smartgaps },
+	{ "viewontag",     	    INTEGER, &viewontag },
+	{ "mfact",      	 	FLOAT,   &mfact },
 };
-
 
 /* button definitions */
 /* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
@@ -158,48 +154,6 @@ static Button buttons[] = {
 	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
 };
-
-void
-setlayoutex(const Arg *arg)
-{
-	setlayout(&((Arg) { .v = &layouts[arg->i] }));
-}
-
-void
-viewex(const Arg *arg)
-{
-	view(&((Arg) { .ui = 1 << arg->ui }));
-}
-
-void
-viewall(const Arg *arg)
-{
-	view(&((Arg){.ui = ~0}));
-}
-
-void
-toggleviewex(const Arg *arg)
-{
-	toggleview(&((Arg) { .ui = 1 << arg->ui }));
-}
-
-void
-tagex(const Arg *arg)
-{
-	tag(&((Arg) { .ui = 1 << arg->ui }));
-}
-
-void
-toggletagex(const Arg *arg)
-{
-	toggletag(&((Arg) { .ui = 1 << arg->ui }));
-}
-
-void
-tagall(const Arg *arg)
-{
-	tag(&((Arg){.ui = ~0}));
-}
 
 /* signal definitions */
 /* signum must be greater than 0 */
