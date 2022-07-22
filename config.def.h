@@ -13,18 +13,18 @@ static int floatposgrid_x     = 5;    /* float grid columns */
 static int floatposgrid_y     = 5;    /* float grid rows */
 static int horizpadbar        = 2;    /* horizontal padding for statusbar */
 static int vertpadbar         = 8;    /* vertical padding for statusbar */
-static int vertpad            = 0;    /* vertical padding of bar */
-static int sidepad            = 0;    /* horizontal padding of bar */
+static int vertpad            = 8;    /* vertical padding of bar */
+static int sidepad            = 16;   /* horizontal padding of bar */
 static int showbar            = 1;    /* 0 means no bar */
 static int topbar             = 1;    /* 0 means bottom bar */
 static int smartgaps          = 0;    /* 1 means no outer gap when there is only one window */
 static int viewontag          = 1;    /* Switch view on tag switch */
 
 /* gaps */
-static unsigned int gappih    = 8;    /* horiz inner gap between windows */
-static unsigned int gappiv    = 8;    /* vert inner gap between windows */
-static unsigned int gappoh    = 8;    /* horiz outer gap between windows and screen edge */
-static unsigned int gappov    = 16;   /* vert outer gap between windows and screen edge */
+static unsigned int gappih    = 4;    /* horiz inner gap between windows */
+static unsigned int gappiv    = 4;    /* vert inner gap between windows */
+static unsigned int gappoh    = 4;    /* horiz outer gap between windows and screen edge */
+static unsigned int gappov    = 4;    /* vert outer gap between windows and screen edge */
 
 /* fonts */
 static const char *fonts[]    = { "monospace:size=9", "Siji" };
@@ -36,7 +36,7 @@ static char normfgcolor[]     = "#bbbbbb";
 static char selbordercolor[]  = "#005577";
 static char selbgcolor[]      = "#005577";
 static char selfgcolor[]      = "#eeeeee";
-static char *colors[][3] = {
+static char *colors[][3]      = {
 	/*               fg           bg           border   */
 	[SchemeNorm] = { normfgcolor, normbgcolor, normbordercolor },
 	[SchemeSel]  = { selfgcolor,  selbgcolor,  selbordercolor  },
@@ -70,25 +70,43 @@ static Sp scratchpads[] = {
 /* tagging */
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
-
 static const Rule rules[] = {
 	/* xprop(1):
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class      instance    title           tags mask     isfloating   isterminal  noswallow  floatpos               monitor */
-	{ "Gimp",     NULL,       NULL,           0,            1,           0,           0,        NULL,                  -1 },
-	{ "firefox",  NULL,       NULL,           1 << 8,       0,           0,          -1,        NULL,                  -1 },
-	{ "St",       NULL,       NULL,           0,            0,           1,           0,        NULL,                  -1 },
-	{ "mpv",      NULL,       NULL,           0,            1,           0,           0,        "100% 100% 320W 180H", -1 },
-	{ NULL,       NULL,       "Event Tester", 0,            0,           0,           1,        NULL,                  -1 },
-	{ NULL,       "spterm",	  NULL,           SPTAG(0),     1,           1,           0,        "50% 50% 800W 300H",   -1 },
-	{ NULL,       "spfm",     NULL,           SPTAG(1),     1,           1,           0,        "0X 0Y 100% 30%",      -1 },
-	{ NULL,       "spcalc",   NULL,           SPTAG(2),     1,           1,           0,        "100% 100% 400W 300H", -1 },
+	/* class      instance    title     tags mask     isfloating   isterminal  noswallow  floatpos               monitor */
+	{ "Gimp",     NULL,       NULL,     0,            1,           0,          0,         NULL,                  -1 },
+	{ "firefox",  NULL,       NULL,     1 << 8,       0,           0,          1,         NULL,                  -1 },
+	{ "St",       NULL,       NULL,     0,            0,           1,          0,         NULL,                  -1 },
+	{ "mpv",      NULL,       NULL,     0,            1,           0,          0,         "100% 100% 320W 180H", -1 },
+	{ NULL,       "spterm",	  NULL,     SPTAG(0),     1,           1,          1,         "50% 50% 800W 300H",   -1 },
+	{ NULL,       "spfm",     NULL,     SPTAG(1),     1,           1,          1,         "0X 0Y 100% 30%",      -1 },
+	{ NULL,       "spcalc",   NULL,     SPTAG(2),     1,           1,          1,         "100% 100% 400W 300H", -1 },
+};
+
+/* Bar rules allow you to configure what is shown where on the bar, as well as
+ * introducing your own bar modules.
+ *
+ *    monitor:
+ *      -1  show on all monitors
+ *       0  show on monitor 0
+ *      'A' show on active monitor (i.e. focused / selected) (or just -1 for active?)
+ *    bar - bar index, 0 is default, 1 is extrabar
+ *    alignment - how the module is aligned compared to other modules
+ *    widthfunc, drawfunc, clickfunc - providing bar module width, draw and click functions
+ *    name - does nothing, intended for visual clue and for logging / debugging
+ */
+static const BarRule barrules[] = {
+	/* monitor  bar    alignment         widthfunc              drawfunc              clickfunc           name */
+	{ 'A',      1,     BAR_ALIGN_LEFT,   width_status,          draw_status,          click_status,       "status" },
+	{ -1,       1,     BAR_ALIGN_RIGHT,  width_ltsymbol,        draw_ltsymbol,        click_ltsymbol,     "layout" },
+	{ -1,       1,     BAR_ALIGN_RIGHT,  width_tags,            draw_tags,            click_tags,         "tags" },
+	{ -1,       0,     BAR_ALIGN_NONE,   width_awesomebar,      draw_awesomebar,      click_awesomebar,   "awesomebar" },
 };
 
 /* layout(s) */
-static float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
+static float mfact     = 0.50; /* factor of master area size [0.05..0.95] */
 static int nmaster     = 1;    /* number of clients in master area */
 static int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
 static const int lockfullscreen = 1;    /* 1 will force focus on the fullscreen window */
