@@ -50,17 +50,13 @@ draw_awesomebar(Bar *bar, BarDrawArg *a)
 				#endif // BAR_VTCOLORS_PATCH
 
 			pad = lrpad / 2;
-			#if BAR_CENTEREDWINDOWNAME_PATCH
+			//#if BAR_CENTEREDWINDOWNAME_PATCH
 			if (TEXTW(c->name) < tabw)
 				pad = (tabw - TEXTW(c->name) + lrpad) / 2;
-			#endif // BAR_CENTEREDWINDOWNAME_PATCH
+			//#endif // BAR_CENTEREDWINDOWNAME_PATCH
 
 			drw_setscheme(drw, scheme[scm]);
-			#if BAR_PANGO_PATCH
-			drw_text(drw, x, 0, tabw + (i < remainder ? 1 : 0), bh, pad, c->name, 0, False);
-			#else
 			drw_text(drw, x, 0, tabw + (i < remainder ? 1 : 0), bh, pad, c->name, 0);
-			#endif // BAR_PANGO_PATCH
 			x += tabw + (i < remainder ? 1 : 0);
 		}
 	}

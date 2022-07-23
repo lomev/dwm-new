@@ -260,7 +260,7 @@ static Monitor *dirtomon(int dir);
 static void drawbar(Monitor *m);
 static void drawbars(void);
 static void drawbarwin(Bar *bar);
-static int drawstatusbar(Monitor *m, int bh, char* text);
+//static int drawstatusbar(Monitor *m, int bh, char* text);
 static void enternotify(XEvent *e);
 static void expose(XEvent *e);
 static void floatpos(const Arg *arg);
@@ -273,7 +273,7 @@ static Atom getatomprop(Client *c, Atom prop);
 static void getfloatpos(int pos, char pCh, int size, char sCh, int min_p, int max_s, int cp, int cs, int cbw, int defgrid, int *out_p, int *out_s);
 static int getrootptr(int *x, int *y);
 static long getstate(Window w);
-static pid_t getstatusbarpid();
+//static pid_t getstatusbarpid();
 static int gettextprop(Window w, Atom atom, char *text, unsigned int size);
 static void goback(const Arg *arg);
 static void grabbuttons(Client *c, int focused);
@@ -309,7 +309,7 @@ static void setup(void);
 static void seturgent(Client *c, int urg);
 static void showhide(Client *c);
 static void sigchld(int unused);
-static void sigstatusbar(const Arg *arg);
+//static void sigstatusbar(const Arg *arg);
 static void spawn(const Arg *arg);
 static void tag(const Arg *arg);
 static void tagmon(const Arg *arg);
@@ -365,9 +365,12 @@ static pid_t winpid(Window w);
 static Client *prevzoom = NULL;
 static const char broken[] = "broken";
 static char stext[1024];
-static int statussig;
-static int statusw;
-static pid_t statuspid = -1;
+static char rawstext[1024];
+static char estext[1024];
+static char rawestext[1024];
+//static int statussig;
+//static int statusw;
+//static pid_t statuspid = -1;
 static int screen;
 static int sw, sh;           /* X display screen geometry width, height */
 static int bh;               /* bar geometry */
@@ -1051,7 +1054,7 @@ dirtomon(int dir)
 	return m;
 }
 
-
+/*
 int
 drawstatusbar(Monitor *m, int bh, char* stext) {
 	int ret, i, j, w, x, len;
@@ -1070,7 +1073,6 @@ drawstatusbar(Monitor *m, int bh, char* stext) {
 			text[j++] = stext[i];
 	text[j] = '\0';
 
-	/* compute width of the status text */
 	w = 0;
 	i = -1;
 	while (text[++i]) {
@@ -1104,7 +1106,6 @@ drawstatusbar(Monitor *m, int bh, char* stext) {
 	drw_rect(drw, x - 2 * sp, 0, w, bh, 1, 1);
 	x += horizpadbar / 2;
 
-	/* process status text */
 	i = -1;
 	while (text[++i]) {
 		if (text[i] == '^' && !isCode) {
@@ -1116,7 +1117,6 @@ drawstatusbar(Monitor *m, int bh, char* stext) {
 
 			x += w;
 
-			/* process code */
 			while (text[++i] != '^') {
 				if (text[i] == 'c') {
 					char buf[8];
@@ -1164,6 +1164,7 @@ drawstatusbar(Monitor *m, int bh, char* stext) {
 
 	return ret;
 }
+*/
 
 void
 drawbar(Monitor *m)
@@ -1611,6 +1612,7 @@ getfloatpos(int pos, char pCh, int size, char sCh, int min_p, int max_s, int cp,
 	*out_s = MAX(cs - 2*cbw, 1);
 }
 
+/*
 pid_t
 getstatusbarpid()
 {
@@ -1634,6 +1636,7 @@ getstatusbarpid()
 	pclose(fp);
 	return strtoul(buf, NULL, 10);
 }
+*/
 
 int
 getrootptr(int *x, int *y)
@@ -2527,6 +2530,7 @@ sigchld(int unused)
 	while (0 < waitpid(-1, NULL, WNOHANG));
 }
 
+/*
 void
 sigstatusbar(const Arg *arg)
 {
@@ -2540,6 +2544,7 @@ sigstatusbar(const Arg *arg)
 
 	sigqueue(statuspid, SIGRTMIN+statussig, sv);
 }
+*/
 
 void
 spawn(const Arg *arg)
@@ -3012,8 +3017,19 @@ void
 updatestatus(void)
 {
     Monitor *m;
-	if (!gettextprop(root, XA_WM_NAME, stext, sizeof(stext)))
+	if (!gettextprop(root, XA_WM_NAME, rawstext, sizeof(rawstext))) {
 		strcpy(stext, "dwm-"VERSION);
+		estext[0] = '\0';
+	} else {
+		char *e = strchr(rawstext, statussep);
+		if (e) {
+			*e = '\0'; e++;
+			strncpy(rawestext, e, sizeof(estext) - 1);
+			copyvalidchars(estext, rawestext);
+		} else
+			estext[0] = '\0';
+		copyvalidchars(stext, rawstext);
+	}
    	for(m = mons; m; m = m->next)
 		drawbar(m);
 }
