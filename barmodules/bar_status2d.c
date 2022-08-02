@@ -4,11 +4,13 @@ width_status2d(Bar *bar, BarWidthArg *a)
 	return status2dtextlength(rawstext) + lrpad;
 }
 
+/*
 int
 width_status2d_es(Bar *bar, BarWidthArg *a)
 {
 	return status2dtextlength(rawestext);
 }
+*/
 
 int
 draw_status2d(Bar *bar, BarDrawArg *a)
@@ -16,11 +18,13 @@ draw_status2d(Bar *bar, BarDrawArg *a)
 	return drawstatusbar(a->x, rawstext);
 }
 
+/*
 int
 draw_status2d_es(Bar *bar, BarDrawArg *a)
 {
 	return drawstatusbar(a->x, rawestext);
 }
+*/
 
 int
 drawstatusbar(int x, char* stext)
@@ -39,8 +43,8 @@ drawstatusbar(int x, char* stext)
 
 	x += lrpad / 2;
 	drw_setscheme(drw, scheme[LENGTH(colors)]);
-	drw->scheme[ColFg] = scheme[SchemeNorm][ColFg];
-	drw->scheme[ColBg] = scheme[SchemeNorm][ColBg];
+	drw->scheme[ColFg] = scheme[SchemeStatus][ColFg];
+	drw->scheme[ColBg] = scheme[SchemeStatus][ColBg];
 
 	/* process status text */
 	i = -1;
@@ -66,7 +70,7 @@ drawstatusbar(int x, char* stext)
 					memcpy(buf, (char*)text+i+1, 7);
 					buf[7] = '\0';
 					//drw_clr_create(drw, &drw->scheme[ColFg], buf, 0xff);
-					drw_clr_create(drw, &drw->scheme[ColFg], buf, alphas[SchemeNorm][ColFg]);
+					drw_clr_create(drw, &drw->scheme[ColFg], buf, alphas[SchemeStatus][ColFg]);
 					i += 7;
 				} else if (text[i] == 'b') {
 					char buf[8];
@@ -78,11 +82,11 @@ drawstatusbar(int x, char* stext)
 					memcpy(buf, (char*)text+i+1, 7);
 					buf[7] = '\0';
 					//drw_clr_create(drw, &drw->scheme[ColBg], buf, 0xff);
-					drw_clr_create(drw, &drw->scheme[ColBg], buf, alphas[SchemeNorm][ColBg]);
+					drw_clr_create(drw, &drw->scheme[ColBg], buf, alphas[SchemeStatus][ColBg]);
 					i += 7;
 				} else if (text[i] == 'd') {
-					drw->scheme[ColFg] = scheme[SchemeNorm][ColFg];
-					drw->scheme[ColBg] = scheme[SchemeNorm][ColBg];
+					drw->scheme[ColFg] = scheme[SchemeStatus][ColFg];
+					drw->scheme[ColBg] = scheme[SchemeStatus][ColBg];
 				} else if (text[i] == 'r') {
 					int rx = atoi(text + ++i);
 					while (text[++i] != ',');
@@ -116,7 +120,7 @@ drawstatusbar(int x, char* stext)
 	}
 	free(p);
 
-	drw_setscheme(drw, scheme[SchemeNorm]);
+	drw_setscheme(drw, scheme[SchemeStatus]);
 
 	return x;
 }

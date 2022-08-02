@@ -23,9 +23,9 @@ draw_awesomebar(Bar *bar, BarDrawArg *a)
 			if (!ISVISIBLE(c))
 				continue;
 			if (bar->mon->sel == c)
-				scm = SchemeSel;
+				scm = SchemeTitleSel;
 			else
-				scm = SchemeNorm;
+				scm = SchemeTitleNorm;
 
 			pad = lrpad / 2;
 			if (TEXTW(c->name) < tabw)

@@ -29,7 +29,7 @@ draw_tags(Bar *bar, BarDrawArg *a)
 	for (i = 0; i < LENGTH(tags); i++) {
 		invert = urg & 1 << i;
 		w = TEXTW(tags[i]);
-		drw_setscheme(drw, scheme[m->tagset[m->seltags] & 1 << i ? SchemeSel : SchemeNorm]);
+		drw_setscheme(drw, scheme[m->tagset[m->seltags] & 1 << i ? SchemeTagsSel : SchemeTagsNorm]);
 		drw_text(drw, x, 0, w, bh, lrpad / 2, tags[i], invert);
 
 		if (occ & 1 << i)
