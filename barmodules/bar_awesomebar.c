@@ -7,7 +7,7 @@ width_awesomebar(Bar *bar, BarWidthArg *a)
 int
 draw_awesomebar(Bar *bar, BarDrawArg *a)
 {
-	int n = 0, scm, remainder = 0, tabw, pad;
+	int n = 0, scm, remainder = 0, tabw, pad, ipad;
 	unsigned int i;
 	int x = a->x, w = a->w;
 
@@ -27,16 +27,24 @@ draw_awesomebar(Bar *bar, BarDrawArg *a)
 			else
 				scm = SchemeTitleNorm;
 
-			pad = lrpad / 2;
-			if (TEXTW(c->name) < tabw)
+            pad = lrpad / 2;
+            ipad = c->icon ? c->icw + ICONSPACING : 0;
+
+			if (TEXTW(c->name) < tabw + ipad)
 				pad = (tabw - TEXTW(c->name) + lrpad) / 2;
 
 			drw_setscheme(drw, scheme[scm]);
-			drw_text(drw, x, 0, tabw + (i < remainder ? 1 : 0), bh, pad, c->name, 0);
+
+			drw_text(drw, x, 0, tabw + (i < remainder ? 1 : 0), bh, pad + ipad, c->name, 0);
+
+			if (ipad) {
+			    drw_pic(drw, x + pad, (bh - c->ich) / 2, c->icw, c->ich, c->icon);
+			}
+
 			x += tabw + (i < remainder ? 1 : 0);
 		}
 	}
-	return a->x + a->w;
+	return n;
 }
 
 int
