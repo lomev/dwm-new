@@ -7,3 +7,4 @@
 #include "bar_status2d.h"
 #include "bar_dwmblocks.h"
 #include "bar_statuscmd.h"
+#include "bar_systray.h"

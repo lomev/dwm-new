@@ -5,3 +5,4 @@
 #include "bar_status2d.c"
 #include "bar_dwmblocks.c"
 #include "bar_statuscmd.c"
+#include "bar_systray.c"
