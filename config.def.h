@@ -1,34 +1,40 @@
 /* See LICENSE file for copyright and license details. */
 
-#define MODKEY                  Mod4Mask
+#define MODKEY                  Mod1Mask
 #define OPAQUE                  0xffU
 #define COL_NONE                "#000000"
+#define ICONSIZE                (bh - 4)
+#define ICONSPACING             (bh - 12)
 
 /* appearance */
 static unsigned int borderpx  = 1;    /* border pixel of windows */
 static unsigned int snap      = 8;    /* snap pixel */
-static int horizpadbar        = 4;    /* horizontal padding for statusbar */
-static int vertpadbar         = 4;    /* vertical padding for statusbar */
+static int horizpadbar        = 2;    /* horizontal padding for statusbar */
+static int vertpadbar         = 6;    /* vertical padding for statusbar */
 static int showbar            = 1;    /* 0 means no bar */
 static int topbar             = 1;    /* 0 means bottom bar */
 static int smartgaps          = 0;    /* 1 means no outer gap when there is only one window */
-static int viewontag          = 1;    /* Switch view on tag switch */
+static int viewontag          = 1;    /* switch view on tag switch */
+static int showsystray        = 1;    /* 0 means no systray */
+
+/* systray settings */
+static int systrayspacing     = 2;    /* systray spacing */
 
 /* gaps */
-static unsigned int gappih    = 3;    /* horiz inner gap between windows */
-static unsigned int gappiv    = 3;    /* vert inner gap between windows */
-static unsigned int gappoh    = 3;    /* horiz outer gap between windows and screen edge */
-static unsigned int gappov    = 3;    /* vert outer gap between windows and screen edge */
+static unsigned int gappih    = 4;    /* horiz inner gap between windows */
+static unsigned int gappiv    = 4;    /* vert inner gap between windows */
+static unsigned int gappoh    = 4;    /* horiz outer gap between windows and screen edge */
+static unsigned int gappov    = 4;    /* vert outer gap between windows and screen edge */
 
 /* fonts */
 static char font_mono[256]    = { "monospace:size=9" };
 static char font_glyphs[256]  = { "Siji:size=10" };
 static const char *fonts[]    = { font_glyphs, font_mono };
 
-/* cholorscheme */
+/* colorscheme */
 static char col_normborder[]  = "#444444";
 static char col_normbg[]      = "#222222";
-static char col_normfg[]      = "#bbbbbb";
+static char col_normfg[]      = "#bbbbbb"; 
 static char col_selborder[]   = "#005577";
 static char col_selbg[]       = "#005577";
 static char col_selfg[]       = "#eeeeee";
@@ -43,7 +49,7 @@ static char col_seltitlebg[]  = "#005577";
 static char col_seltagsfg[]   = "#eeeeee";
 static char col_seltagsbg[]   = "#005577";
 static char *colors[][3]      = {
-	/*                    fg               bg               border   */
+	/*                    fg               bg               border         */
 	[SchemeNorm]      = { col_normfg,      col_normbg,      col_normborder },
 	[SchemeSel]       = { col_selfg,       col_selbg,       col_selborder  },
 	[SchemeStatus]    = { col_statusfg,    col_statusbg,    COL_NONE       },
@@ -53,12 +59,12 @@ static char *colors[][3]      = {
 	[SchemeTitleSel]  = { col_seltitlefg,  col_seltitlebg,  COL_NONE       },
 };
 
+/* transparency */
 static const unsigned int baralpha    = 0x64;
-static const unsigned int borderalpha = OPAQUE;
 static const unsigned int alphas[][3] = {
-	/*               fg      bg        border   */
-	[SchemeNorm] = { OPAQUE, baralpha, borderalpha  },
-	[SchemeSel]  = { OPAQUE, baralpha, borderalpha  },
+	/*               fg      bg        border */
+	[SchemeNorm] = { OPAQUE, baralpha, OPAQUE },
+	[SchemeSel]  = { OPAQUE, baralpha, OPAQUE },
 };
 
 /* scratchpads */
@@ -84,20 +90,21 @@ static const char *tags[] = { "1", "2", "3", "4", "5" };
 static const int floatposgrid_x  = 5;  /* float grid columns */
 static const int floatposgrid_y  = 5;  /* float grid rows */
 static const int swallowfloating = 0;  /* 1 means swallow floating windows by default */
-
 static const Rule rules[] = {
 	/* xprop(1):
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class      instance    title     tags mask     isfloating   isterminal  noswallow  floatpos               monitor */
-	{ "Gimp",     NULL,       NULL,     0,            1,           0,          0,         NULL,                  -1 },
+	{ "Gimp",     NULL,       NULL,     0,            1,           0,          1,         NULL,                  -1 },
 	{ "firefox",  NULL,       NULL,     1 << 4,       0,           0,          1,         NULL,                  -1 },
-	{ "St",       NULL,       NULL,     0,            0,           1,          1,         NULL,                  -1 },
-	{ "mpv",      NULL,       NULL,     0,            1,           0,          1,         "100% 100% 320W 180H", -1 },
-	{ NULL,       "spterm",	  NULL,     SPTAG(0),     1,           1,          1,         "50% 50% 800W 300H",   -1 },
-	{ NULL,       "spfm",     NULL,     SPTAG(1),     1,           1,          1,         "0X 0Y 100% 30%",      -1 },
-	{ NULL,       "spcalc",   NULL,     SPTAG(2),     1,           1,          1,         "100% 100% 400W 300H", -1 },
+	{ "St",       NULL,       NULL,     0,            0,           1,          0,         NULL,                  -1 },
+	{ "sxiv",     NULL,       NULL,     0,            1,           0,          0,         NULL,                  -1 },
+	{ "dragon",   NULL,       NULL,     0,            1,           0,          0,         "50% 0Y 80W 180H",     -1 },
+	{ "mpv",      NULL,       NULL,     0,            1,           0,          0,         "100% 100% 320W 180H", -1 },
+	{ NULL,       "spterm",	  NULL,     SPTAG(0),     1,           1,          0,         "50% 50% 800W 300H",   -1 },
+	{ NULL,       "spfm",     NULL,     SPTAG(1),     1,           1,          0,         "0X 0Y 100% 30%",      -1 },
+	{ NULL,       "spcalc",   NULL,     SPTAG(2),     1,           1,          0,         "100% 100% 400W 300H", -1 },
 };
 
 /* Bar rules allow you to configure what is shown where on the bar, as well as
@@ -114,11 +121,11 @@ static const Rule rules[] = {
  */
 
 static const char statussep = ';';  /* separator between status bars */
-
 static const BarRule barrules[] = {
 	/* monitor  bar    alignment         widthfunc              drawfunc              clickfunc           name */
+	{ 'A',      0,     BAR_ALIGN_LEFT,   width_systray,         draw_systray,         click_systray,      "systray" },
+	{ -1,       0,     BAR_ALIGN_LEFT,   width_ltsymbol,        draw_ltsymbol,        click_ltsymbol,     "layout" },
 	{ -1,       0,     BAR_ALIGN_LEFT,   width_status2d,        draw_status2d,        click_statuscmd,    "status2d" },
-	{ -1,       0,     BAR_ALIGN_RIGHT,  width_ltsymbol,        draw_ltsymbol,        click_ltsymbol,     "layout" },
 	{ -1,       0,     BAR_ALIGN_RIGHT,  width_tags,            draw_tags,            click_tags,         "tags" },
 	{ -1,       0,     BAR_ALIGN_NONE,   width_awesomebar,      draw_awesomebar,      click_awesomebar,   "awesomebar" },
 };
@@ -130,7 +137,6 @@ static int resizehints = 0;           /* 1 means respect size hints in tiled res
 static const int lockfullscreen = 1;  /* 1 will force focus on the fullscreen window */
 
 #include "vanitygaps.c"
-
 static const Layout layouts[] = {
 	/* symbol     arrange function */
 	{ " \ue002",  tile },
@@ -169,6 +175,7 @@ ResourcePref resources[] = {
 	{ "topbar",          	INTEGER, &topbar },
 	{ "smartgaps",     	    INTEGER, &smartgaps },
 	{ "viewontag",     	    INTEGER, &viewontag },
+	{ "showsystray",   	    INTEGER, &showsystray },
 	{ "gappih",       	    INTEGER, &gappih },
 	{ "gappiv",       	    INTEGER, &gappiv },
 	{ "gappoh",       	    INTEGER, &gappoh },
