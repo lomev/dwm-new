@@ -1,6 +1,6 @@
 /* See LICENSE file for copyright and license details. */
 
-#define MODKEY                  Mod1Mask
+#define MODKEY                  Mod4Mask
 #define OPAQUE                  0xffU
 #define COL_NONE                "#000000"
 #define ICONSIZE                (bh - 4)
